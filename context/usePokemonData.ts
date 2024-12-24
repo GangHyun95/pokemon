@@ -3,16 +3,47 @@ import React, { useEffect, useState } from 'react';
 
 const pokemonBaseUrl = 'https://pokeapi.co/api/v2';
 
+export type Pokemon = {
+    name: string;
+    url: string;
+};
+
+export type PokemonDetail = {
+    id: number;
+    name: string;
+    weight: number;
+    height: number;
+    base_experience: number;
+    types: PokemonType[];
+    sprites: {
+        front_default: string;
+        other?: {
+            home?: {
+                front_default?: string;
+            };
+        };
+    };
+};
+
+export type PokemonType = {
+    type: {
+        name: string;
+        url: string;
+    };
+};
+
 export const usePokemonData = () => {
     const [loading, setLoading] = useState(false);
-    const [pokemonList, setPokemonList] = useState([]);
+    const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [allPokemon, setAllPokemon] = useState([]);
-    const [pokemonListDetails, setPokemonListDetails] = useState([]);
+    const [allPokemon, setAllPokemon] = useState<Pokemon[]>([]);
+    const [pokemonListDetails, setPokemonListDetails] = useState<
+        PokemonDetail[]
+    >([]);
     const [originalPokemonListDetails, setOriginalPokemonListDetails] =
-        useState([]);
+        useState<PokemonDetail[]>([]);
 
-    const fetchPokemon = async (page = 1) => {
+    const fetchPokemon = async (page = 1): Promise<void> => {
         setLoading(true);
         try {
             const offset = (page - 1) * 50;
@@ -28,7 +59,7 @@ export const usePokemonData = () => {
         }
     };
 
-    const fetchAllPokemon = async () => {
+    const fetchAllPokemon = async (): Promise<void> => {
         try {
             const res = await axios.get(`${pokemonBaseUrl}/pokemon?limit=1118`);
             setAllPokemon(res.data.results);
@@ -37,7 +68,7 @@ export const usePokemonData = () => {
         }
     };
 
-    const fetchPokemonDetails = async () => {
+    const fetchPokemonDetails = async (): Promise<void> => {
         setLoading(true);
         try {
             const details = await Promise.all(
@@ -47,6 +78,8 @@ export const usePokemonData = () => {
                     return res.data;
                 })
             );
+            setLoading(false);
+
             setPokemonListDetails(details);
 
             setOriginalPokemonListDetails(details);
@@ -66,8 +99,7 @@ export const usePokemonData = () => {
         }
     }, [pokemonList]);
 
-    console.log('pokemonList:', pokemonList);
-    console.log('pokemonListDetails:', pokemonListDetails);
-    console.log(allPokemon);
+    console.log('pokemonList:', pokemonList[0]);
+    console.log('pokemonListDetails:', pokemonListDetails[0]);
     return { fetchPokemon, loading, pokemonList, pokemonListDetails };
 };
