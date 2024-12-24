@@ -6,6 +6,8 @@ type GlobalContextType = {
     fetchPokemon: (page?: number) => Promise<void>;
     pokemonList: Pokemon[];
     pokemonListDetails: PokemonDetail[];
+    fetchPokemonByName: (name: string) => void;
+    activePokemon: any;
 };
 const GlobalContext = createContext<GlobalContextType | null>(null);
 
@@ -14,8 +16,14 @@ export const GlobalContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const { fetchPokemon, loading, pokemonList, pokemonListDetails } =
-        usePokemonData();
+    const {
+        fetchPokemon,
+        loading,
+        pokemonList,
+        pokemonListDetails,
+        fetchPokemonByName,
+        activePokemon
+    } = usePokemonData();
 
     return (
         <GlobalContext.Provider
@@ -24,6 +32,8 @@ export const GlobalContextProvider = ({
                 fetchPokemon,
                 pokemonList,
                 pokemonListDetails,
+                fetchPokemonByName,
+                activePokemon
             }}
         >
             {children}
@@ -34,7 +44,9 @@ export const GlobalContextProvider = ({
 export const useGlobalContext = () => {
     const context = useContext(GlobalContext);
     if (!context) {
-        throw new Error('useGlobalContext는 GlobalContextProvider 내에서 사용되어야 합니다.');
+        throw new Error(
+            'useGlobalContext는 GlobalContextProvider 내에서 사용되어야 합니다.'
+        );
     }
     return context;
 };
