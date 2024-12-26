@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Pokemon, PokemonDetail, usePokemonData } from './usePokemonData';
+import { ActivePokemon, Pokemon, PokemonDetail, usePokemonData } from './usePokemonData';
 
 type GlobalContextType = {
     loading: boolean;
@@ -7,7 +7,7 @@ type GlobalContextType = {
     pokemonList: Pokemon[];
     pokemonListDetails: PokemonDetail[];
     fetchPokemonByName: (name: string) => void;
-    activePokemon: any;
+    activePokemon: ActivePokemon | null;
 };
 const GlobalContext = createContext<GlobalContextType | null>(null);
 

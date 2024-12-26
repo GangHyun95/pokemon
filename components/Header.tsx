@@ -63,7 +63,7 @@ export default function Header() {
                                 href={item.link}
                                 className={`py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg ${
                                     pathname === item.link
-                                        ? 'bg-[#6c5ce7]/15 text-[#6c5ce7]'
+                                        ? 'bg-purple/15 text-purple'
                                         : ''
                                 }`}
                             >
@@ -78,8 +78,8 @@ export default function Header() {
                 <div className=''>
                     <DropdownMenu modal={false}>
                         <DropdownMenuTrigger className='outline-none border-none'>
-                            <div className='bg-[#6c5ce7]/15 flex items-center justify-center gap-2 rounded-lg cursor-pointer'>
-                                <span className='pl-2 text-[#6c5ce7] text-sm font-bold'>
+                            <div className='bg-purple/15 flex items-center justify-center gap-2 rounded-lg cursor-pointer'>
+                                <span className='pl-2 text-purple text-sm font-bold'>
                                     {user?.name || 'User'}
                                 </span>
                                 <Image
@@ -109,14 +109,14 @@ export default function Header() {
                 <div className='flex items-center gap-4'>
                     <Link
                         href='/api/auth/login'
-                        className='py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg bg-[#6c5ce7]/15 text-[#6c5ce7] hover:bg-[#6c5ce7]/30 transition-all duration-300 ease-in-out'
+                        className='py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg bg-purple/15 text-purple hover:bg-purple/30 transition-all duration-300 ease-in-out'
                     >
                         <LogIn size={20} />
                         Login
                     </Link>
                     <Link
                         href='/api/auth/login'
-                        className='py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg bg-[#6c5ce7] text-white hover:bg-[#6c5ce7]/90 transition-all duration-300 ease-in-out'
+                        className='py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg bg-purple text-white hover:bg-purple/90 transition-all duration-300 ease-in-out'
                     >
                         <UserPlus size={20} />
                         Register

@@ -25,6 +25,31 @@ export type PokemonDetail = {
     };
 };
 
+export type ActivePokemon = {
+    name: string;
+    abilities: AbilitiesType[];
+    types: PokemonType[];
+    stats: StatsType[];
+    height: number;
+    weight: number;
+    base_experience: number;
+    cries: {
+        legacy: string;
+        latest: string;
+    };
+    sprites: {
+        front_default: string;
+        other?: {
+            home?: {
+                front_shiny?: string;
+            };
+            showdown?: {
+                front_default?: string;
+            };
+        };
+    };
+};
+
 export type PokemonType = {
     type: {
         name: string;
@@ -54,7 +79,7 @@ export const usePokemonData = () => {
     const [pokemonListDetails, setPokemonListDetails] = useState<
         PokemonDetail[]
     >([]);
-    const [activePokemon, setActivePokemon] = useState(null);
+    const [activePokemon, setActivePokemon] = useState<ActivePokemon | null>(null);
     const [originalPokemonListDetails, setOriginalPokemonListDetails] =
         useState<PokemonDetail[]>([]);
 

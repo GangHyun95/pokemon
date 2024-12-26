@@ -1,7 +1,11 @@
 'use client';
 
 import { useGlobalContext } from '@/context/globalContext';
-import { AbilitiesType, PokemonType, StatsType } from '@/context/usePokemonData';
+import {
+    AbilitiesType,
+    PokemonType,
+    StatsType,
+} from '@/context/usePokemonData';
 import { typeColor } from '@/utils/colors';
 import { volumeHigh } from '@/utils/Icons';
 import { Ruler, Weight } from 'lucide-react';
@@ -20,33 +24,33 @@ export default function Page({ params }: Props) {
         fetchPokemonByName(id);
     }, [id]);
 
+    const typeName = activePokemon?.types?.length
+        ? activePokemon.types[
+              Math.floor(Math.random() * activePokemon.types.length)
+          ]?.type?.name
+        : undefined;
+
+    const backgroundColor = typeName ? typeColor[typeName] : 'transparent';
+
     return (
         <main>
             {loading && (
-                <div className="h-[80vh] flex justify-center items-center">
-                    <div className="loader"></div>
+                <div className='h-[80vh] flex justify-center items-center'>
+                    <div className='loader'></div>
                 </div>
             )}
             {!loading && (
                 <section
                     className='px-16 py-8 min-h-[90vh] grid grid-cols-1 md:grid-cols-2 gap-8'
                     style={{
-                        background:
-                            typeColor[
-                                activePokemon?.types[
-                                    Math.floor(
-                                        Math.random() *
-                                            activePokemon?.types.length
-                                    )
-                                ].type.name
-                            ],
+                        background: backgroundColor,
                     }}
                 >
                     <div className='flex flex-col justify-center gap-6'>
                         <div className='flex flex-col gap-1'>
                             <div className='flex gap-4'>
                                 <button
-                                    className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-[#54a0ff] rounded-full
+                                    className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-skyBlue rounded-full
                                     hover:bg-white/90 transition-all duration-300 ease-in-out'
                                     onClick={() => {
                                         const audio = new Audio(
@@ -58,7 +62,7 @@ export default function Page({ params }: Props) {
                                     {volumeHigh} Old Cry
                                 </button>
                                 <button
-                                    className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-[#54a0ff] rounded-full
+                                    className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-skyBlue rounded-full
                                     hover:bg-white/90 transition-all duration-300 ease-in-out'
                                     onClick={() => {
                                         const audio = new Audio(
@@ -83,10 +87,13 @@ export default function Page({ params }: Props) {
                                 </h2>
                                 <ul className='flex gap-2'>
                                     {activePokemon?.abilities.map(
-                                        (ability: AbilitiesType, index: number) => (
+                                        (
+                                            ability: AbilitiesType,
+                                            index: number
+                                        ) => (
                                             <li
                                                 key={index}
-                                                className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-[#54a0ff] rounded-full'
+                                                className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-skyBlue rounded-full'
                                             >
                                                 {ability.ability.name}
                                             </li>
@@ -181,9 +188,11 @@ export default function Page({ params }: Props) {
                         />
                         <Image
                             src={
-                                activePokemon?.sprites?.other?.home?.front_shiny ||
-                                activePokemon?.sprites?.other?.showdown?.front_default ||
-                                activePokemon?.sprites?.front_default || 
+                                activePokemon?.sprites?.other?.home
+                                    ?.front_shiny ||
+                                activePokemon?.sprites?.other?.showdown
+                                    ?.front_default ||
+                                activePokemon?.sprites?.front_default ||
                                 '/pokemon--logo.png'
                             }
                             alt='pokemon image'
