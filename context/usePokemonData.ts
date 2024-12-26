@@ -32,6 +32,20 @@ export type PokemonType = {
     };
 };
 
+export type AbilitiesType = {
+    ability: {
+        name: string;
+        url: string;
+    }
+}
+
+export type StatsType = {
+    base_stat: number;
+    stat: {
+        name: string;
+        url: string;
+    }
+}
 export const usePokemonData = () => {
     const [loading, setLoading] = useState(false);
     const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
@@ -106,7 +120,6 @@ export const usePokemonData = () => {
     useEffect(() => {
         fetchPokemon();
         fetchAllPokemon();
-        console.log("D");
     }, []);
 
     useEffect(() => {

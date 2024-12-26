@@ -41,6 +41,7 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonDetail }) {
                         width={200}
                         height={200}
                         className='object-contain'
+                        priority
                     />
                 </div>
                 <div className='flex-1 flex flex-col items-center justify-center gap-4'>

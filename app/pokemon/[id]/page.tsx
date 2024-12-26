@@ -1,6 +1,7 @@
 'use client';
 
 import { useGlobalContext } from '@/context/globalContext';
+import { AbilitiesType, PokemonType, StatsType } from '@/context/usePokemonData';
 import { typeColor } from '@/utils/colors';
 import { volumeHigh } from '@/utils/Icons';
 import { Ruler, Weight } from 'lucide-react';
@@ -82,7 +83,7 @@ export default function Page({ params }: Props) {
                                 </h2>
                                 <ul className='flex gap-2'>
                                     {activePokemon?.abilities.map(
-                                        (ability: any, index: number) => (
+                                        (ability: AbilitiesType, index: number) => (
                                             <li
                                                 key={index}
                                                 className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-[#54a0ff] rounded-full'
@@ -98,7 +99,7 @@ export default function Page({ params }: Props) {
                                 <h2 className='text-2xl font-bold'>Types</h2>
                                 <ul className='flex flex-wrap gap-2'>
                                     {activePokemon?.types.map(
-                                        (type: any, index: number) => (
+                                        (type: PokemonType, index: number) => (
                                             <li
                                                 key={index}
                                                 className='px-4 py-2 flex items-center gap-2 text-sm font-bold bg-zinc-700 text-white rounded-full'
@@ -115,7 +116,7 @@ export default function Page({ params }: Props) {
                             <h2 className='text-2xl font-bold'>Base Stats</h2>
                             <ul className='flex flex-col gap-4'>
                                 {activePokemon?.stats.map(
-                                    (stat: any, index: number) => (
+                                    (stat: StatsType, index: number) => (
                                         <li
                                             key={index}
                                             className='flex flex-col gap-1'
@@ -180,11 +181,10 @@ export default function Page({ params }: Props) {
                         />
                         <Image
                             src={
-                                activePokemon?.sprites?.other?.home
-                                    ?.front_shiny ||
-                                activePokemon?.sprites?.other?.showdown
-                                    ?.front_default ||
-                                activePokemon?.sprites?.front_default
+                                activePokemon?.sprites?.other?.home?.front_shiny ||
+                                activePokemon?.sprites?.other?.showdown?.front_default ||
+                                activePokemon?.sprites?.front_default || 
+                                '/pokemon--logo.png'
                             }
                             alt='pokemon image'
                             width={500}

@@ -51,6 +51,7 @@ export default function Header() {
                     src={'/pokemon--logo.png'}
                     width={120}
                     height={90}
+                    style={{ width: 'auto', height: 'auto' }}
                     alt='logo'
                 />
             </Link>
