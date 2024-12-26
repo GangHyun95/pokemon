@@ -142,6 +142,10 @@ export const usePokemonData = () => {
         }
     };
 
+    const loadMore = () => {
+        fetchPokemon(currentPage + 1);
+    };
+
     useEffect(() => {
         fetchPokemon();
         fetchAllPokemon();
@@ -161,6 +165,7 @@ export const usePokemonData = () => {
         pokemonList,
         pokemonListDetails,
         fetchPokemonByName,
-        activePokemon
+        activePokemon,
+        loadMore
     };
 };

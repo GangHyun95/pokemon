@@ -8,6 +8,7 @@ type GlobalContextType = {
     pokemonListDetails: PokemonDetail[];
     fetchPokemonByName: (name: string) => void;
     activePokemon: ActivePokemon | null;
+    loadMore: () => void;
 };
 const GlobalContext = createContext<GlobalContextType | null>(null);
 
@@ -22,7 +23,8 @@ export const GlobalContextProvider = ({
         pokemonList,
         pokemonListDetails,
         fetchPokemonByName,
-        activePokemon
+        activePokemon,
+        loadMore
     } = usePokemonData();
 
     return (
@@ -33,7 +35,8 @@ export const GlobalContextProvider = ({
                 pokemonList,
                 pokemonListDetails,
                 fetchPokemonByName,
-                activePokemon
+                activePokemon,
+                loadMore
             }}
         >
             {children}
