@@ -13,11 +13,13 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 
 type Props = {
-    params: Promise<{ id: string }>;
+    params: {
+        id: string;
+    }
 };
 
 export default function Page({ params }: Props) {
-    const { id } = React.use(params);
+    const { id } = params;
     const { fetchPokemonByName, loading, activePokemon } = useGlobalContext();
 
     useEffect(() => {
@@ -27,7 +29,7 @@ export default function Page({ params }: Props) {
     const typeName = activePokemon?.types?.length
         ? activePokemon.types[
               Math.floor(Math.random() * activePokemon.types.length)
-          ]?.type?.name
+        ]?.type?.name
         : undefined;
 
     const backgroundColor = typeName ? typeColor[typeName] : 'transparent';
