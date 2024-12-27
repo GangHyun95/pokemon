@@ -1,16 +1,10 @@
-'use client';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import {
-    Bookmark,
-    Heart,
-    LayoutDashboard,
     LogIn,
     LogOut,
     UserPlus,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,30 +13,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import HeaderNav from './HeaderNav';
+import { getSession } from '@auth0/nextjs-auth0';
 
-export default function Header() {
-    const { user, isLoading } = useUser();
-    const router = useRouter();
-    const pathname = usePathname();
-    const menu = [
-        {
-            name: 'Browse',
-            link: '/',
-            icon: <LayoutDashboard size={20} />,
-        },
-        {
-            name: 'Favorites',
-            link: '/favorites',
-            icon: <Heart size={22} />,
-        },
-        {
-            name: 'Saved',
-            link: '/bookmarks',
-            icon: <Bookmark size={22} />,
-        },
-    ];
-
-    if (isLoading) return null;
+export default  async function Header() {
+    const session = await getSession();
+    const user = session?.user;
 
     return (
         <header className='min-h-[10vh] px-16 py-6 w-full bg-white flex justify-between items-center shadow-sm'>
@@ -55,26 +31,8 @@ export default function Header() {
                     alt='logo'
                 />
             </Link>
-            <nav>
-                <ul className='flex items-center gap-8 text-gray-400'>
-                    {menu.map((item, index) => (
-                        <li key={index}>
-                            <Link
-                                href={item.link}
-                                className={`py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg ${
-                                    pathname === item.link
-                                        ? 'bg-purple/15 text-purple'
-                                        : ''
-                                }`}
-                            >
-                                <span>{item.icon}</span>
-                                <span>{item.name}</span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            {user?.sub && !isLoading && (
+            <HeaderNav />
+            {user?.sub && (
                 <div className=''>
                     <DropdownMenu modal={false}>
                         <DropdownMenuTrigger className='outline-none border-none'>
@@ -94,18 +52,20 @@ export default function Header() {
                         <DropdownMenuContent className='w-[160px]'>
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
+                            <Link href='/api/auth/logout'>
+                            
                             <DropdownMenuItem
                                 className='cursor-pointer'
-                                onClick={() => router.push('/api/auth/logout')}
                             >
                                 <LogOut />
                                 Logout
                             </DropdownMenuItem>
+                            </Link>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             )}
-            {!user?.sub && !isLoading && (
+            {!user?.sub && (
                 <div className='flex items-center gap-4'>
                     <Link
                         href='/api/auth/login'

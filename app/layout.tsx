@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Noto_Sans } from 'next/font/google';
 import './globals.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import ContextProvider from '@/providers/ContextProvider';
 import Header from '@/components/Header';
 
 const notoSans = Noto_Sans({
@@ -32,14 +31,10 @@ export default function RootLayout({
                 />
             </head>
             <UserProvider>
-                <ContextProvider>
-                    <body
-                        className={`${notoSans.className} antialiased`}
-                    >
-                        <Header />
-                        {children}
-                    </body>
-                </ContextProvider>
+                <body className={`${notoSans.className} antialiased`}>
+                    <Header />
+                    {children}
+                </body>
             </UserProvider>
         </html>
     );
