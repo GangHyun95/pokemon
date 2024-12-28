@@ -1,4 +1,4 @@
-import { PokemonDetail, PokemonType } from '@/lib/pokemon';
+import { PokemonDetail } from '@/lib/pokemon';
 import { typeColor } from '@/utils/colors';
 import { arrowAngleRight, bookmarkEmpty, heartEmpty } from '@/utils/Icons';
 import Image from 'next/image';
@@ -27,11 +27,12 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonDetail }) {
                 </Link>
             </div>
             <div className='flex gap-4'>
-                <div className='flex-1'>
+                <div className='flex-1 flex items-center'>
                     <Image
+                        key={pokemon?.sprites?.other?.home?.front_default || pokemon?.sprites?.front_default}
                         src={
                             pokemon?.sprites?.other?.home?.front_default ||
-                            pokemon?.sprites?.front_default
+                            pokemon?.sprites?.front_default || "/pokemon--logo.png"
                         }
                         alt='pokemon image'
                         width={200}
@@ -58,7 +59,7 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonDetail }) {
 
                     <div className='flex justify-center gap-2'>
                         {pokemon.types.map(
-                            (type: PokemonType, index: number) => (
+                            (type, index) => (
                                 <p
                                     key={index}
                                     className='text-xs uppercase font-semibold text-white px-5 py-1 rounded-full'

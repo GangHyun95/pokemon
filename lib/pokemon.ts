@@ -1,6 +1,6 @@
 const pokemonBaseUrl = 'https://pokeapi.co/api/v2';
 
-export type Pokemon = {
+type Pokemon = {
     name: string;
     url: string;
 };
@@ -22,7 +22,7 @@ export type PokemonDetail = {
     };
 };
 
-export type ActivePokemon = {
+type ActivePokemon = {
     name: string;
     abilities: AbilitiesType[];
     types: PokemonType[];
@@ -47,21 +47,21 @@ export type ActivePokemon = {
     };
 };
 
-export type PokemonType = {
+type PokemonType = {
     type: {
         name: string;
         url: string;
     };
 };
 
-export type AbilitiesType = {
+type AbilitiesType = {
     ability: {
         name: string;
         url: string;
     }
 }
 
-export type StatsType = {
+type StatsType = {
     base_stat: number;
     stat: {
         name: string;
@@ -69,14 +69,14 @@ export type StatsType = {
     }
 }
 
-export async function fetchPokemon(page = 1): Promise<Pokemon[]> {
+export async function fetchPokemon(page = 1): Promise<{ count: number; results: Pokemon[] }> {
     const offset = (page - 1) * 20;
     const response = await fetch(`${pokemonBaseUrl}/pokemon?limit=20&offset=${offset}`);
     if (!response.ok) {
         throw new Error('포켓몬 목록을 가져오는 데 실패했습니다.');
     }
     const data = await response.json();
-    return data.results;
+    return { count: data.count, results: data.results };
 }
 
 export async function fetchPokemonDetails(pokemonList: { url: string }[]): Promise<PokemonDetail[]> {
