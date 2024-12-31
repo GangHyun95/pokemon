@@ -22,7 +22,8 @@ export type PokemonDetail = {
     };
 };
 
-type ActivePokemon = {
+export type ActivePokemon = {
+    id: number;
     name: string;
     abilities: AbilitiesType[];
     types: PokemonType[];
@@ -38,6 +39,7 @@ type ActivePokemon = {
         front_default: string;
         other?: {
             home?: {
+                front_default?: string;
                 front_shiny?: string;
             };
             showdown?: {
