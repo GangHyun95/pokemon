@@ -3,6 +3,7 @@ import { Noto_Sans } from 'next/font/google';
 import './globals.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Header from '@/components/Header';
+import FetchUserDetails from '@/components/FetchUserDetails';
 
 const notoSans = Noto_Sans({
     weight: ['400', '700'],
@@ -32,6 +33,7 @@ export default function RootLayout({
             </head>
             <UserProvider>
                 <body className={`${notoSans.className} antialiased`}>
+                    <FetchUserDetails />
                     <Header />
                     {children}
                 </body>
