@@ -10,7 +10,7 @@ export default function page() {
     const [bookmarkedPokemons, setBookmarkedPokemons] = useState<
         ActivePokemon[]
     >([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         if (userDetails?.bookmarks) {
             setLoading(true);
@@ -39,20 +39,20 @@ export default function page() {
         <main>
             {!loading && (
                 <section className='min-h-[91vh]'>
-                    <div className='px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                        {bookmarkedPokemons.length > 0 ? (
-                            bookmarkedPokemons.map((pokemon, index) => (
+                    {bookmarkedPokemons.length > 0 ? (
+                        <div className='px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                            {bookmarkedPokemons.map((pokemon, index) => (
                                 <PokemonCard
                                     key={pokemon.name + index}
                                     pokemon={pokemon}
                                 />
-                            ))
-                        ) : (
-                            <h2 className='text-center text-2xl font-bold text-gray-800 mt-20'>
-                                No bookmarked pokemons
-                            </h2>
-                        )}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <h2 className='text-center text-2xl font-bold text-gray-800 mt-20'>
+                            No bookmarked pokemons
+                        </h2>
+                    )}
                 </section>
             )}
         </main>

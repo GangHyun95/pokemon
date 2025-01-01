@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 export default function page() {
     const { userDetails } = useUserStore();
     const [likedPokemons, setLikedPokemons] = useState<ActivePokemon[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         if (userDetails?.liked) {
             setLoading(true);
@@ -35,22 +35,24 @@ export default function page() {
     }
     return (
         <main>
-            {!loading && <section className='min-h-[91vh]'>
-                <div className='px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+            {!loading && (
+                <section className='min-h-[91vh]'>
                     {likedPokemons.length > 0 ? (
-                        likedPokemons.map((pokemon, index) => (
-                            <PokemonCard
-                                key={pokemon.name + index}
-                                pokemon={pokemon}
-                            />
-                        ))
+                        <div className='px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                            {likedPokemons.map((pokemon, index) => (
+                                <PokemonCard
+                                    key={pokemon.name + index}
+                                    pokemon={pokemon}
+                                />
+                            ))}
+                        </div>
                     ) : (
                         <h2 className='text-center text-2xl font-bold text-gray-800 mt-20'>
                             No liked pokemons
                         </h2>
                     )}
-                </div>
-            </section>}
+                </section>
+            )}
         </main>
     );
 }
