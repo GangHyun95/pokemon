@@ -25,32 +25,37 @@ export default function Home({
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchPokemon(page);
-            await fetchPokemonDetails();
+            if (!pokemonListDetails[page]) {
+                await fetchPokemon(page);
+                await fetchPokemonDetails(page);
+            }
         };
 
         fetchData();
-    }, [fetchPokemon, fetchPokemonDetails]);
+    }, [fetchPokemon, fetchPokemonDetails, page, pokemonListDetails]);
 
     if (loading) return <Loading />;
-    
+
     return (
         <main>
-            <section className='mt-10 flex items-center justify-center'>
+            <section className="mt-10 flex items-center justify-center">
                 <SearchForm />
             </section>
             <section>
                 <Filters />
             </section>
 
-            <section className='min-h-[91vh]'>
-                <div className='px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                    {pokemonListDetails.map((pokemon) => (
+            <section className="min-h-[91vh]">
+                <div className="px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {pokemonListDetails[page]?.map((pokemon) => (
                         <PokemonCard key={pokemon.id} pokemon={pokemon} />
                     ))}
                 </div>
             </section>
-            <Pagination currentPage={page} totalPages={totalPages} />
+            <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+            />
         </main>
     );
 }

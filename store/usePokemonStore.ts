@@ -1,27 +1,26 @@
-import { Pokemon, PokemonDetail } from '@/lib/types';
-import { fetchAllPokemon, fetchPokemon, fetchPokemonByName, fetchPokemonDetails } from '@/lib/api';
 import { create } from 'zustand';
+import { fetchAllPokemon, fetchPokemon, fetchPokemonByName, fetchPokemonDetails } from '@/lib/api';
+import { Pokemon, PokemonDetail } from '@/lib/types';
 
 type PokemonStore = {
     count: number;
     loading: boolean;
-    pokemonList: Pokemon[];
     currentPage: number;
+    pokemonList: Pokemon[];
     allPokemon: Pokemon[];
-    pokemonListDetails: PokemonDetail[];
     searchQuery: string;
+    pokemonListDetails: Record<number, PokemonDetail[]>;
     fetchPokemon: (page: number) => Promise<void>;
     fetchAllPokemon: () => Promise<void>;
-    fetchPokemonDetails: () => Promise<void>;
+    fetchPokemonDetails: (page: number) => Promise<void>;
 };
-
 export const usePokemonStore = create<PokemonStore>((set, get) => ({
     count: 0,
-    loading: true,
+    loading: false,
     pokemonList: [],
     currentPage: 1,
     allPokemon: [],
-    pokemonListDetails: [],
+    pokemonListDetails: {},
     searchQuery: '',
 
     fetchPokemon: async (page = 1) => {
@@ -34,7 +33,6 @@ export const usePokemonStore = create<PokemonStore>((set, get) => ({
             set({ loading: false });
         }
     },
-
     fetchAllPokemon: async () => {
         set({ loading: true });
         try {
@@ -46,12 +44,23 @@ export const usePokemonStore = create<PokemonStore>((set, get) => ({
         }
     },
 
-    fetchPokemonDetails: async () => {
-        const { pokemonList } = get();
+    fetchPokemonDetails: async (page = 1) => {
+        const { pokemonList, pokemonListDetails } = get();
+
+        if (pokemonListDetails[page]) return;
+
         set({ loading: true });
         try {
-            const details = await fetchPokemonDetails(pokemonList);
-            set({ pokemonListDetails: details, loading: false });
+            const details = await fetchPokemonDetails(
+                pokemonList.map((pokemon) => ({ url: pokemon.url }))
+            );
+            set((state) => ({
+                pokemonListDetails: {
+                    ...state.pokemonListDetails,
+                    [page]: details,
+                },
+                loading: false,
+            }));
         } catch (error) {
             console.error('포켓몬 상세 정보를 가져오는 데 실패했습니다:', error);
             set({ loading: false });
