@@ -1,15 +1,39 @@
-import { fetchPokemon, fetchPokemonDetails } from '@/lib/pokemon';
+'use client';
+
+import { usePokemonStore } from '@/store/usePokemonStore';
 import PokemonCard from '@/components/PokemonCard';
 import Pagination from '@/components/Pagination';
 import SearchForm from '@/components/SearchForm';
 import Filters from '@/components/Filters';
+import { useEffect } from 'react';
+import Loading from '@/components/Loading';
 
-export default async function Home({ searchParams }: { searchParams: { page?: string } }) {
+export default function Home({
+    searchParams,
+}: {
+    searchParams: { page?: string };
+}) {
     const page = parseInt(searchParams.page || '1', 10);
-    const { count, results } = await fetchPokemon(page);
+    const {
+        count,
+        loading,
+        fetchPokemon,
+        fetchPokemonDetails,
+        pokemonListDetails,
+    } = usePokemonStore();
     const totalPages = Math.ceil(count / 20);
-    const pokemonListDetails = await fetchPokemonDetails(results);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchPokemon(page);
+            await fetchPokemonDetails();
+        };
+
+        fetchData();
+    }, [fetchPokemon, fetchPokemonDetails]);
+
+    if (loading) return <Loading />;
+    
     return (
         <main>
             <section className='mt-10 flex items-center justify-center'>

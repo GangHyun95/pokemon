@@ -1,13 +1,15 @@
 'use client';
 
 import PokemonCard from '@/components/PokemonCard';
-import { ActivePokemon, fetchPokemonByName } from '@/lib/pokemon';
+import { PokemonDetail } from '@/lib/types';
+import { fetchPokemonByName } from '@/lib/api';
 import { useUserStore } from '@/store/useUserStore';
 import { useEffect, useState } from 'react';
+import Loading from '@/components/Loading';
 
 export default function page() {
     const { userDetails } = useUserStore();
-    const [likedPokemons, setLikedPokemons] = useState<ActivePokemon[]>([]);
+    const [likedPokemons, setLikedPokemons] = useState<PokemonDetail[]>([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         if (userDetails?.liked) {
@@ -26,13 +28,8 @@ export default function page() {
         }
     }, [userDetails?.liked]);
 
-    if (loading) {
-        return (
-            <div className='h-[100vh] flex justify-center items-center'>
-                <div className='loader'></div>
-            </div>
-        );
-    }
+    if (loading) return <Loading />;
+
     return (
         <main>
             {!loading && (

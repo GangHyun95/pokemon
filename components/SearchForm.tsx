@@ -1,4 +1,5 @@
 'use client';
+
 import { search } from '@/utils/Icons';
 import React from 'react';
 

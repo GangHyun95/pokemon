@@ -1,5 +1,5 @@
 import PokemonCryButtons from '@/components/PokemonCryButtons';
-import { fetchPokemonByName } from '@/lib/pokemon';
+import { fetchPokemonByName } from '@/lib/api';
 import { typeColor } from '@/utils/colors';
 import { Ruler, Weight } from 'lucide-react';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ export default async function Page({ params }: Props) {
     const typeName = activePokemon.types.length
         ? activePokemon.types[
               Math.floor(Math.random() * activePokemon.types.length)
-          ].type.name
+            ].type.name
         : undefined;
 
     const backgroundColor = typeName ? typeColor[typeName] : 'transparent';

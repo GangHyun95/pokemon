@@ -1,4 +1,4 @@
-import { PokemonDetail } from '@/lib/pokemon';
+import { PokemonDetail } from '@/lib/types';
 import { typeColor } from '@/utils/colors';
 import { arrowAngleRight } from '@/utils/Icons';
 import Image from 'next/image';

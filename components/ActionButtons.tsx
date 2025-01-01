@@ -1,6 +1,6 @@
 'use client';
 
-import { PokemonDetail } from '@/lib/pokemon';
+import { PokemonDetail } from '@/lib/types';
 import { useUserStore } from '@/store/useUserStore';
 import {
     bookmarkEmpty,
@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function ActionButtons({ pokemon }: { pokemon: PokemonDetail }) {
-    const { user } = useUser();
+    const { user} = useUser();
     const { performAction, userDetails } = useUserStore();
     const router = useRouter();
 
