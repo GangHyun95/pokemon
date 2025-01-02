@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { fetchAllPokemon, fetchPokemon, fetchPokemonByName, fetchPokemonDetails } from '@/lib/api';
+import { fetchAllPokemon, fetchPokemon, fetchPokemonDetails } from '@/lib/api';
 import { Pokemon, PokemonDetail } from '@/lib/types';
 
 type PokemonStore = {
@@ -9,11 +9,16 @@ type PokemonStore = {
     pokemonList: Pokemon[];
     allPokemon: Pokemon[];
     searchQuery: string;
-    pokemonListDetails: Record<number, PokemonDetail[]>;
+    pokemonListDetails: Record<number | string, PokemonDetail[]>;
     fetchPokemon: (page: number) => Promise<void>;
     fetchAllPokemon: () => Promise<void>;
     fetchPokemonDetails: (page: number) => Promise<void>;
+    searchPokemon: (query: string) => Promise<void>;
+    updateSearchQuery: (query: string) => void;
 };
+
+let debounceTimer: NodeJS.Timeout | null = null;
+
 export const usePokemonStore = create<PokemonStore>((set, get) => ({
     count: 0,
     loading: false,
@@ -27,7 +32,12 @@ export const usePokemonStore = create<PokemonStore>((set, get) => ({
         set({ loading: true });
         try {
             const data = await fetchPokemon(page);
-            set({ count: data.count, pokemonList: data.results, currentPage: page, loading: false });
+            set({
+                count: data.count,
+                pokemonList: data.results,
+                currentPage: page,
+                loading: false,
+            });
         } catch (error) {
             console.error('포켓몬 목록을 가져오는 데 실패했습니다:', error);
             set({ loading: false });
@@ -39,7 +49,10 @@ export const usePokemonStore = create<PokemonStore>((set, get) => ({
             const results = await fetchAllPokemon();
             set({ allPokemon: results, loading: false });
         } catch (error) {
-            console.error('전체 포켓몬 목록을 가져오는 데 실패했습니다:', error);
+            console.error(
+                '전체 포켓몬 목록을 가져오는 데 실패했습니다:',
+                error
+            );
             set({ loading: false });
         }
     },
@@ -62,8 +75,63 @@ export const usePokemonStore = create<PokemonStore>((set, get) => ({
                 loading: false,
             }));
         } catch (error) {
-            console.error('포켓몬 상세 정보를 가져오는 데 실패했습니다:', error);
+            console.error(
+                '포켓몬 상세 정보를 가져오는 데 실패했습니다:',
+                error
+            );
             set({ loading: false });
         }
+    },
+
+    searchPokemon: async (query) => {
+        const { allPokemon } = get();
+
+        if (!query) {
+            set({ searchQuery: query });
+            const details = await fetchPokemonDetails(
+                allPokemon.map((pokemon) => ({ url: pokemon.url }))
+            );
+            set((state) => ({
+                pokemonListDetails: {
+                    ...state.pokemonListDetails,
+                    search: [],
+                    0: details,
+                },
+            }));
+            return;
+        }
+
+        set({ loading: true, searchQuery: query });
+
+        const filteredPokemon = allPokemon.filter((pokemon) =>
+            pokemon.name.toLowerCase().includes(query.toLowerCase())
+        );
+
+        try {
+            const filteredDetails = await fetchPokemonDetails(
+                filteredPokemon.map((pokemon) => ({ url: pokemon.url }))
+            );
+
+            set((state) => ({
+                pokemonListDetails: {
+                    ...state.pokemonListDetails,
+                    search: filteredDetails,
+                },
+                loading: false,
+            }));
+        } catch (error) {
+            console.error('포켓몬 검색 중 오류 발생:', error);
+            set({ loading: false });
+        }
+    },
+
+    updateSearchQuery: (query) => {
+        set({ searchQuery: query });
+        if (debounceTimer) clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            const { searchPokemon } = get();
+            searchPokemon(query);
+        }, 500);
     },
 }));

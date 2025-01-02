@@ -19,7 +19,10 @@ export default function Home({
         loading,
         fetchPokemon,
         fetchPokemonDetails,
+        fetchAllPokemon,
+        allPokemon,
         pokemonListDetails,
+        searchQuery
     } = usePokemonStore();
     const totalPages = Math.ceil(count / 20);
 
@@ -34,28 +37,38 @@ export default function Home({
         fetchData();
     }, [fetchPokemon, fetchPokemonDetails, page, pokemonListDetails]);
 
-    if (loading) return <Loading />;
+    useEffect(() => {
+        if (allPokemon.length === 0) {
+            const loadAllPokemon = async () => {
+                await fetchAllPokemon();
+            };
+
+            loadAllPokemon();
+        }
+    }, [fetchAllPokemon, allPokemon]);
+
+    // if (loading) return <Loading />;
+    const pokemonData = searchQuery
+        ? pokemonListDetails.search || []
+        : pokemonListDetails[page] || [];
 
     return (
         <main>
-            <section className="mt-10 flex items-center justify-center">
+            <section className='mt-10 flex items-center justify-center'>
                 <SearchForm />
             </section>
             <section>
                 <Filters />
             </section>
 
-            <section className="min-h-[91vh]">
-                <div className="px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {pokemonListDetails[page]?.map((pokemon) => (
+            <section className='min-h-[91vh]'>
+                <div className='px-16 py-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                    {pokemonData.map((pokemon) => (
                         <PokemonCard key={pokemon.id} pokemon={pokemon} />
                     ))}
                 </div>
             </section>
-            <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-            />
+            <Pagination currentPage={page} totalPages={totalPages} />
         </main>
     );
 }

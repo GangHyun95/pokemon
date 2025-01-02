@@ -1,6 +1,17 @@
 const nextConfig = {
     images: {
-        domains: ['lh3.googleusercontent.com', 'raw.githubusercontent.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'raw.githubusercontent.com',
+                pathname: '/**',
+            },
+        ],
     },
     /* config options here */
 };

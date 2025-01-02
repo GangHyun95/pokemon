@@ -23,8 +23,6 @@ export default async function Page({ params }: Props) {
 
     const backgroundColor = typeName ? typeColor[typeName] : 'transparent';
 
-    console.log(activePokemon.stats);
-
     return (
         <main>
             <section
