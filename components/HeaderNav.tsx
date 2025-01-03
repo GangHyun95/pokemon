@@ -26,7 +26,7 @@ export default function HeaderNav() {
     ];
     return (
         <nav>
-            <ul className='flex items-center gap-8 text-gray-400'>
+            <ul className='hidden md:flex items-center gap-8 text-gray-400'>
                 {menu.map((item, index) => (
                     <li key={index}>
                         <Link

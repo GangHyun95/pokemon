@@ -4,9 +4,7 @@ import { usePokemonStore } from '@/store/usePokemonStore';
 import PokemonCard from '@/components/PokemonCard';
 import Pagination from '@/components/Pagination';
 import SearchForm from '@/components/SearchForm';
-import Filters from '@/components/Filters';
 import { useEffect } from 'react';
-import Loading from '@/components/Loading';
 
 export default function Home({
     searchParams,
@@ -16,7 +14,6 @@ export default function Home({
     const page = parseInt(searchParams.page || '1', 10);
     const {
         count,
-        loading,
         fetchPokemon,
         fetchPokemonDetails,
         fetchAllPokemon,
@@ -56,9 +53,6 @@ export default function Home({
         <main>
             <section className='mt-10 flex items-center justify-center'>
                 <SearchForm />
-            </section>
-            <section>
-                <Filters />
             </section>
 
             <section className='min-h-[91vh]'>
