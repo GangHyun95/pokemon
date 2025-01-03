@@ -10,6 +10,8 @@ type Props = {
 export default function Pagination({ currentPage, totalPages }: Props) {
     const maxVisiblePages = 5;
 
+    if (totalPages <= 1) return null;
+    
     const getPageNumbers = () => {
         const pages: (number | '...')[] = [];
         pages.push(1);
@@ -20,7 +22,7 @@ export default function Pagination({ currentPage, totalPages }: Props) {
             }
         } else {
             const half = Math.floor((maxVisiblePages - 1) / 2);
-            const startPage = Math.max(2, currentPage - half); 
+            const startPage = Math.max(2, currentPage - half);
             const endPage = Math.min(totalPages - 1, currentPage + half);
 
             if (startPage > 2) {

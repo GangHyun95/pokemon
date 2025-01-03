@@ -4,13 +4,15 @@ import { usePokemonStore } from '@/store/usePokemonStore';
 import PokemonCard from '@/components/PokemonCard';
 import Pagination from '@/components/Pagination';
 import SearchForm from '@/components/SearchForm';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home({
     searchParams,
 }: {
     searchParams: { page?: string };
 }) {
+    const router = useRouter();
     const page = parseInt(searchParams.page || '1', 10);
     const {
         count,
@@ -21,7 +23,28 @@ export default function Home({
         pokemonListDetails,
         searchQuery
     } = usePokemonStore();
-    const totalPages = Math.ceil(count / 20);
+
+    const [lastVisitedPage, setLastVisitedPage] = useState(page);
+    const itemsPerPage = 20;
+
+    const isSearching = searchQuery !== '';
+    const searchResults = pokemonListDetails.search || [];
+    const totalSearchPages = Math.ceil(searchResults.length / itemsPerPage);
+    const totalPages = isSearching ? totalSearchPages : Math.ceil(count / itemsPerPage);
+
+    const pokemonData = isSearching
+        ? searchResults.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        : pokemonListDetails[page] || [];
+
+    
+    useEffect(() => {
+        if (isSearching) {
+            setLastVisitedPage(page);
+            if (page !== 1) router.push('/?page=1');
+        } else if (!isSearching && lastVisitedPage !== page) {
+            router.push(`/?page=${lastVisitedPage}`);
+        }
+    }, [isSearching]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,11 +66,6 @@ export default function Home({
             loadAllPokemon();
         }
     }, [fetchAllPokemon, allPokemon]);
-
-    // if (loading) return <Loading />;
-    const pokemonData = searchQuery
-        ? pokemonListDetails.search || []
-        : pokemonListDetails[page] || [];
 
     return (
         <main>
