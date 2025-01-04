@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 시연 페이지
+[Live Demo](https://pokemon-mu-azure.vercel.app/)
 
-## Getting Started
+## 프로젝트 소개
+Next.js와 TypeScript를 사용하여 PokeAPI를 기반으로 제작한 포켓몬 도감 프로젝트입니다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 기술 스택
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| JavaScript | TypeScript |   Next.js   |   Prisma   |   MongoDB   |
+| :--------: | :--------: | :---------: | :--------: | :---------: |
+|   ![js]    |   ![ts]    |   ![next]   |   ![prisma] |   ![mongo] |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 주요 기능
 
-## Learn More
+### 1. 좋아요 및 북마크 기능
+- MongoDB와 Prisma를 활용하여 좋아요 및 북마크 기능 구현.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. 로그인 및 로그아웃
+- Auth0를 사용한 로그인, 로그아웃 기능
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. 상태 관리
+- Zustand를 활용한 상태 관리.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<!-- Stack Icon References -->
+[js]: https://pokemon-mu-azure.vercel.app/javascript.svg
+[ts]: https://pokemon-mu-azure.vercel.app/typescript.svg
+[next]: https://pokemon-mu-azure.vercel.app/nextjs.svg
+[mongo]: https://pokemon-mu-azure.vercel.app/mongodb.svg
+[prisma]: https://pokemon-mu-azure.vercel.app/prisma.svg
