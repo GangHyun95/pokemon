@@ -2,6 +2,7 @@ import PokemonCryButtons from '@/components/PokemonCryButtons';
 import { fetchPokemonByName } from '@/lib/api';
 import { typeColor } from '@/utils/colors';
 import { Ruler, Weight } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 
 type Props = {
@@ -9,6 +10,30 @@ type Props = {
         id: string;
     };
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = params;
+    const activePokemon = await fetchPokemonByName(id);
+
+    return {
+        title: `${activePokemon.name} - 포켓몬 상세 정보`,
+        description: `${activePokemon.name}의 능력치, 타입, 키, 몸무게 등 다양한 정보를 확인하세요!`,
+        openGraph: {
+            title: `${activePokemon.name} - 포켓몬 상세 정보`,
+            description: `${activePokemon.name}의 능력치, 타입, 키, 몸무게 등 다양한 정보를 확인하세요!`,
+            images: [
+                {
+                    url: activePokemon?.sprites?.other?.home?.front_shiny || 
+                        activePokemon?.sprites?.front_default || 
+                        '/pokemon--logo.png',
+                    width: 800,
+                    height: 800,
+                    alt: `${activePokemon.name} 이미지`,
+                },
+            ],
+        },
+    };
+}
 
 export default async function Page({ params }: Props) {
     const { id } = params;

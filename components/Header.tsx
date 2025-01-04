@@ -1,7 +1,8 @@
 import {
+    Bookmark,
+    Heart,
     LogIn,
     LogOut,
-    UserPlus,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -51,6 +52,22 @@ export default  async function Header() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className='w-[160px]'>
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <div className='block md:hidden'>
+                                <DropdownMenuSeparator />
+                                <Link href='/favorites'>
+                                    <DropdownMenuItem className='cursor-pointer'>
+                                        <Heart />
+                                        Favorites
+                                    </DropdownMenuItem>
+                                </Link>
+                                <DropdownMenuSeparator />
+                                <Link href='/bookmarks'>
+                                    <DropdownMenuItem className='cursor-pointer'>
+                                        <Bookmark />
+                                        Bookmarks
+                                    </DropdownMenuItem>
+                                </Link>
+                            </div>
                             <DropdownMenuSeparator />
                             <Link href='/api/auth/logout'>
                             
@@ -73,13 +90,6 @@ export default  async function Header() {
                     >
                         <LogIn size={20} />
                         Login
-                    </Link>
-                    <Link
-                        href='/api/auth/login'
-                        className='py-2 px-6 text-sm flex items-center gap-2 font-bold rounded-lg bg-purple text-white hover:bg-purple/90 transition-all duration-300 ease-in-out'
-                    >
-                        <UserPlus size={20} />
-                        Register
                     </Link>
                 </div>
             )}
